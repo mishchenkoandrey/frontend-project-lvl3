@@ -1,7 +1,10 @@
+// @ts-check
 import onChange from 'on-change';
 
-const input = document.querySelector('.form-control');
+const submitButton = /** @type {HTMLButtonElement} */(document.querySelector('[type="submit"]'));
+const input = /** @type {HTMLInputElement} */(document.querySelector('.form-control'));
 const feedback = document.querySelector('.feedback');
+
 const clearFeedback = () => {
   feedback.textContent = '';
   feedback.classList.remove('text-danger', 'text-success');
@@ -9,14 +12,6 @@ const clearFeedback = () => {
 };
 
 const toggleForm = (status) => {
-  const submitButton = document.querySelector('[type="submit"]');
-  /* if (status) {
-    submitButton.setAttribute('disabled', status);
-    input.setAttribute('readOnly', status);
-  } else {
-    submitButton.removeAttribute('disabled');
-    input.removeAttribute('readOnly');
-  } */
   submitButton.disabled = status;
   input.readOnly = status;
 };
@@ -149,6 +144,9 @@ export default (state, i18nInstance) => {
         break;
       case 'form.error':
         renderError(state, value, i18nInstance);
+        break;
+      case 'posts':
+        buildPosts(state, value, i18nInstance);
         break;
       default:
         render(state, i18nInstance);

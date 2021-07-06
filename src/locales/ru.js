@@ -1,3 +1,5 @@
+// @ts-check
+
 export default {
   translation: {
     feeds: 'Фиды',

@@ -1,3 +1,5 @@
+// @ts-check
+
 import axios from 'axios';
 import parseRss from './parser.js';
 

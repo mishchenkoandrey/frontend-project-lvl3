@@ -1,3 +1,5 @@
+// @ts-check
+
 import * as yup from 'yup';
 
 export default (link, feeds) => {

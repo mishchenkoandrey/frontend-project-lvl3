@@ -12,9 +12,6 @@ export default () => {
       processState: 'filling',
       error: null,
     },
-    updateProcess: {
-      state: 'idle',
-    },
     feeds: [],
     posts: [],
     uiState: {
