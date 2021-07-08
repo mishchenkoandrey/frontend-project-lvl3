@@ -32,7 +32,7 @@ export default () => {
         required: i18nInstance.t('errors.emptyField'),
       },
       string: {
-        url: i18nInstance.t('errors.invalidURL'),
+        url: i18nInstance.t('errors.invalidUrl'),
       },
     });
   });

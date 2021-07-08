@@ -1,6 +1,6 @@
 // @ts-check
 /* eslint-disable no-param-reassign */
-
+import _ from 'lodash';
 import validateUrl from './validator.js';
 import loadRss from './loader.js';
 import updateRss from './updater.js';
@@ -16,9 +16,11 @@ export const handleAddFeed = (e, state) => {
     state.form.processState = 'loading';
     loadRss(url)
       .then((feed) => {
-        feed.feedInfo = { ...feed.feedInfo, url };
+        feed.feedInfo = { ...feed.feedInfo, url, id: _.uniqueId() };
         state.feeds = [feed.feedInfo, ...state.feeds];
-        state.posts = [...feed.posts, ...state.posts];
+        const posts = feed.posts
+          .map((post) => ({ ...post, postId: _.uniqueId() }));
+        state.posts = [...posts, ...state.posts];
         state.form.processState = 'success';
         if (feedsCount === 0) {
           updateRss(state);
@@ -30,7 +32,7 @@ export const handleAddFeed = (e, state) => {
         if (err.isAxiosError) {
           state.form.error = 'errors.netError';
         } else {
-          state.form.error = 'errors.invalidRSS';
+          state.form.error = 'errors.invalidRss';
         }
       });
   } else {
@@ -38,24 +40,6 @@ export const handleAddFeed = (e, state) => {
   }
 };
 
-export const handleViewPost = (post) => {
-  document.body.classList.add('modal-open');
-
-  document.querySelector('.modal-title').textContent = post.title;
-
-  document.querySelector('.modal-body').innerHTML = post.desc;
-
-  document.querySelector('.full-article').href = post.url;
-
-  // const modal = document.querySelector('#modal');
-
-  // $(modal).modal({ show: true });
-};
-
-export const handleCloseModal = () => {
-  document.body.classList.remove('modal-open');
-
-  // const modal = document.querySelector('#modal');
-
-  // $(modal).modal({ show: false });
+export const handleViewPost = (state, post) => {
+  state.uiState.viewedPostsIds.push(post.postId);
 };

@@ -8,8 +8,8 @@ export default {
     errors: {
       rssExists: 'RSS уже существует',
       emptyField: 'Не должно быть пустым',
-      invalidURL: 'Ссылка должна быть валидным URL',
-      invalidRSS: 'Ресурс не содержит валидный RSS',
+      invalidUrl: 'Ссылка должна быть валидным URL',
+      invalidRss: 'Ресурс не содержит валидный RSS',
       netError: 'Ошибка сети',
     },
     buttons: {

@@ -1,9 +1,12 @@
 // @ts-check
 import onChange from 'on-change';
+import { handleViewPost } from './handlers.js';
 
 const submitButton = /** @type {HTMLButtonElement} */(document.querySelector('[type="submit"]'));
 const input = /** @type {HTMLInputElement} */(document.querySelector('.form-control'));
 const feedback = document.querySelector('.feedback');
+const fullArticleButton = /** @type {HTMLLinkElement} */(document.querySelector('.full-article'));
+const closeButton = document.querySelector('[data-bs-dismiss="modal"]:not([aria-label="Close"])');
 
 const clearFeedback = () => {
   feedback.textContent = '';
@@ -54,89 +57,94 @@ const renderError = (state, error, i18nInstance) => {
 
 const buildFeeds = (feeds, i18nInstance) => {
   const feedsContainer = document.querySelector('.feeds');
-  feedsContainer.innerHTML = `<h2>${i18nInstance.t('feeds')}</h2>`;
-
+  feedsContainer.innerHTML = '';
+  const feedsCard = document.createElement('div');
+  feedsCard.classList.add('card', 'border-0');
+  feedsCard.innerHTML = `
+    <div class="card-body">
+      <h2 class="card-title h4">${i18nInstance.t('feeds')}</h2>
+    </div>
+  `;
+  feedsContainer.append(feedsCard);
   const ul = document.createElement('ul');
-  ul.classList.add('list-group', 'mb-5');
-
+  ul.classList.add('list-group', 'border-0', 'rounded-0');
   feeds.forEach((feed) => {
     const li = document.createElement('li');
-    li.classList.add('list-group-item');
+    li.classList.add('list-group-item', 'border-0', 'border-end-0');
     li.dataset.id = feed.id;
-
     li.innerHTML = `
-    <h3>${feed.title}</h3>
-    <p>${feed.description}</p>
+      <h3 class="h6 m-0">${feed.title}</h3>
+      <p class="m-0 small text-black-50">${feed.description}</p>
     `;
-
     ul.append(li);
   });
-
-  feedsContainer.append(ul);
+  feedsCard.append(ul);
 };
 
 const buildPosts = (state, posts, i18nInstance) => {
   const postsContainer = document.querySelector('.posts');
-  postsContainer.innerHTML = `<h2>${i18nInstance.t('posts')}</h2>`;
-
+  postsContainer.innerHTML = '';
+  const postsCard = document.createElement('div');
+  postsCard.classList.add('card', 'border-0');
+  postsCard.innerHTML = `
+    <div class="card-body">
+      <h2 class="card-title h4">${i18nInstance.t('posts')}</h4>
+    </div>
+  `;
+  postsContainer.append(postsCard);
   const ul = document.createElement('ul');
-  ul.classList.add('list-group');
-
+  ul.classList.add('list-group', 'border-0', 'rounded-0');
   posts.forEach((post) => {
     const isViewed = state.uiState.viewedPostsIds.includes(post.postId);
-
     const li = document.createElement('li');
-    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
-    li.dataset.id = post.postId;
-
-    li.innerHTML = `
-    <a href="${post.postLink}" class="${isViewed ? 'font-weight-normal' : 'font-weight-bold'}" target="_blank" rel="noopener noreferrer">
-      ${post.postTitle}
-    </a>
-    <button type="button" class="btn btn-primary btn-sm">${i18nInstance.t('buttons.view')}</button>
-    `;
-
-    const a = li.querySelector('a');
-    const button = li.querySelector('button');
-
+    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
+    const a = document.createElement('a');
+    a.href = post.postLink;
+    if (isViewed) {
+      a.classList.add('fw-normal', 'link-secondary');
+    } else {
+      a.classList.add('fw-bold');
+    }
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.dataset.id = post.postId;
+    a.textContent = post.postTitle;
+    li.append(a);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+    button.dataset.bsToggle = 'modal';
+    button.dataset.bsTarget = '#modal';
+    button.dataset.id = post.postId;
+    button.textContent = i18nInstance.t('buttons.view');
+    li.append(button);
     a.addEventListener('click', () => {
       if (!isViewed) {
-        state.uiState.viewedPostsIds.push(post.postId);
+        handleViewPost(state, post);
+        a.classList.remove('fw-bold');
+        a.classList.add('fw-normal', 'link-secondary');
       }
     });
-
     button.addEventListener('click', () => {
       if (!isViewed) {
-        state.uiState.viewedPostsIds.push(post.postId);
+        handleViewPost(state, post);
+        a.classList.remove('fw-bold');
+        a.classList.add('fw-normal', 'link-secondary');
       }
-
-      // handleViewPost(post);
+      const modalTitle = document.querySelector('.modal-title');
+      modalTitle.textContent = post.postTitle;
+      const modalBody = document.querySelector('.modal-body');
+      modalBody.textContent = post.postDescription;
+      fullArticleButton.href = post.postLink;
     });
-
     ul.append(li);
   });
-
-  postsContainer.append(ul);
-};
-
-const render = (state, i18nInstance) => {
-  if (state.feeds.length > 0) {
-    buildFeeds(state.feeds, i18nInstance);
-    buildPosts(state, state.posts, i18nInstance);
-  }
-
-  const fullArticleButton = document.querySelector('.full-article');
-  // const closeButtons = document.querySelectorAll('[data-dismiss="modal"]');
-
-  fullArticleButton.textContent = i18nInstance.t('buttons.readArticle');
-  // closeButtons[1].textContent = "i18nInstance.t('buttons.close')";
-
-  /* closeButtons.forEach((closeButton) => {
-    closeButton.addEventListener('click', handleCloseModal);
-  }); */
+  postsCard.append(ul);
 };
 
 export default (state, i18nInstance) => {
+  fullArticleButton.textContent = i18nInstance.t('buttons.readArticle');
+  closeButton.textContent = i18nInstance.t('buttons.close');
   const watchedState = onChange(state, (path, value) => {
     switch (path) {
       case 'form.processState':
@@ -145,12 +153,14 @@ export default (state, i18nInstance) => {
       case 'form.error':
         renderError(state, value, i18nInstance);
         break;
+      case 'feeds':
+        buildFeeds(value, i18nInstance);
+        break;
       case 'posts':
         buildPosts(state, value, i18nInstance);
         break;
       default:
-        render(state, i18nInstance);
-        break;
+        throw new Error(`Unexpected state: ${path}`);
     }
   });
   return watchedState;
