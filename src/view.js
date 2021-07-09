@@ -2,10 +2,10 @@
 import onChange from 'on-change';
 import { handleViewPost } from './handlers.js';
 
-const submitButton = /** @type {HTMLButtonElement} */(document.querySelector('[type="submit"]'));
-const input = /** @type {HTMLInputElement} */(document.querySelector('.form-control'));
+const submitButton = document.querySelector('[type="submit"]');
+const input = document.querySelector('.form-control');
 const feedback = document.querySelector('.feedback');
-const fullArticleButton = /** @type {HTMLLinkElement} */(document.querySelector('.full-article'));
+const fullArticleButton = document.querySelector('.full-article');
 const closeButton = document.querySelector('[data-bs-dismiss="modal"]:not([aria-label="Close"])');
 
 const clearFeedback = () => {
@@ -15,8 +15,13 @@ const clearFeedback = () => {
 };
 
 const toggleForm = (status) => {
-  submitButton.disabled = status;
-  input.readOnly = status;
+  if (status) {
+    submitButton.setAttribute('disabled', '');
+    input.setAttribute('readOnly', '');
+  } else {
+    submitButton.removeAttribute('disabled');
+    input.removeAttribute('readOnly');
+  }
 };
 
 const renderProcessState = (state, processState, i18nInstance) => {
@@ -135,7 +140,7 @@ const buildPosts = (state, posts, i18nInstance) => {
       modalTitle.textContent = post.postTitle;
       const modalBody = document.querySelector('.modal-body');
       modalBody.textContent = post.postDescription;
-      fullArticleButton.href = post.postLink;
+      fullArticleButton.setAttribute('href', post.postLink);
     });
     ul.append(li);
   });
