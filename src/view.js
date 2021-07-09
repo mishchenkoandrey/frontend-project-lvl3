@@ -100,6 +100,7 @@ const buildPosts = (state, posts, i18nInstance) => {
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'border-0', 'rounded-0');
   posts.forEach((post) => {
+    console.log(state.uiState.viewedPostsIds);
     const isViewed = state.uiState.viewedPostsIds.includes(post.postId);
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');

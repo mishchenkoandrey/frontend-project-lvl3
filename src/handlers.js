@@ -1,6 +1,5 @@
 // @ts-check
 /* eslint-disable no-param-reassign */
-import _ from 'lodash';
 import validateUrl from './validator.js';
 import loadRss from './loader.js';
 import updateRss from './updater.js';
@@ -16,11 +15,9 @@ export const handleAddFeed = (e, state) => {
     state.form.processState = 'loading';
     loadRss(url)
       .then((feed) => {
-        feed.feedInfo = { ...feed.feedInfo, url, id: _.uniqueId() };
+        feed.feedInfo = { ...feed.feedInfo, url };
         state.feeds = [feed.feedInfo, ...state.feeds];
-        const posts = feed.posts
-          .map((post) => ({ ...post, postId: _.uniqueId() }));
-        state.posts = [...posts, ...state.posts];
+        state.posts = [...feed.posts, ...state.posts];
         state.form.processState = 'success';
         if (feedsCount === 0) {
           updateRss(state);
@@ -41,5 +38,5 @@ export const handleAddFeed = (e, state) => {
 };
 
 export const handleViewPost = (state, post) => {
-  state.uiState.viewedPostsIds.push(post.postId);
+  state.uiState.viewedPostsIds = [post.postId, ...state.uiState.viewedPostsIds];
 };

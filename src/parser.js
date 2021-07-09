@@ -1,4 +1,5 @@
 // @ts-check
+import _ from 'lodash';
 
 export default (data) => {
   const parser = new DOMParser();
@@ -7,17 +8,19 @@ export default (data) => {
   const channelItems = [...channel.querySelectorAll('item')];
   const title = channel.querySelector('title').textContent;
   const description = channel.querySelector('description').textContent;
+  const id = _.uniqueId();
   const posts = channelItems.map((item) => {
     const postTitle = item.querySelector('title').textContent;
     const postDescription = item.querySelector('description').textContent;
     const postLink = item.querySelector('link').textContent;
+    const postId = _.uniqueId();
     return {
-      postTitle, postDescription, postLink,
+      postTitle, postDescription, postLink, postId,
     };
   });
   return {
     feedInfo: {
-      title, description,
+      title, description, id,
     },
     posts,
   };
