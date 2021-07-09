@@ -60,7 +60,7 @@ const renderError = (state, error, i18nInstance) => {
   }
 };
 
-const buildFeeds = (feeds, i18nInstance) => {
+const renderFeeds = (feeds, i18nInstance) => {
   const feedsContainer = document.querySelector('.feeds');
   feedsContainer.innerHTML = '';
   const feedsCard = document.createElement('div');
@@ -76,7 +76,6 @@ const buildFeeds = (feeds, i18nInstance) => {
   feeds.forEach((feed) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'border-0', 'border-end-0');
-    li.dataset.id = feed.id;
     li.innerHTML = `
       <h3 class="h6 m-0">${feed.title}</h3>
       <p class="m-0 small text-black-50">${feed.description}</p>
@@ -86,7 +85,7 @@ const buildFeeds = (feeds, i18nInstance) => {
   feedsCard.append(ul);
 };
 
-const buildPosts = (state, posts, i18nInstance) => {
+const renderPosts = (state, posts, i18nInstance) => {
   const postsContainer = document.querySelector('.posts');
   postsContainer.innerHTML = '';
   const postsCard = document.createElement('div');
@@ -160,10 +159,10 @@ export default (state, i18nInstance) => {
         renderError(state, value, i18nInstance);
         break;
       case 'feeds':
-        buildFeeds(value, i18nInstance);
+        renderFeeds(value, i18nInstance);
         break;
       case 'posts':
-        buildPosts(state, value, i18nInstance);
+        renderPosts(state, value, i18nInstance);
         break;
       default:
         throw new Error(`Unexpected state: ${path}`);
