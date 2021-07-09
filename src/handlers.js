@@ -38,5 +38,5 @@ export const handleAddFeed = (e, state) => {
 };
 
 export const handleViewPost = (state, post) => {
-  state.uiState.viewedPostsIds = [post.postId, ...state.uiState.viewedPostsIds];
+  state.viewedPostsIds = [post.postId, ...state.viewedPostsIds];
 };

@@ -14,9 +14,7 @@ export default () => {
     },
     feeds: [],
     posts: [],
-    uiState: {
-      viewedPostsIds: [],
-    },
+    viewedPostsIds: [],
   };
 
   const i18nInstance = i18next.createInstance();
