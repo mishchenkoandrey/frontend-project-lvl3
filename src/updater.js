@@ -10,7 +10,6 @@ const updateRss = (state) => {
     .map(loadRss);
   Promise.all(promises)
     .then((results) => {
-      console.log(results);
       const posts = results
         .flatMap((result) => result.posts);
       const allPosts = _.union(posts, state.posts);
