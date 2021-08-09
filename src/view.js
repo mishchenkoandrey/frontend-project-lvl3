@@ -5,8 +5,6 @@ import { handleViewPost } from './handlers.js';
 const submitButton = document.querySelector('[type="submit"]');
 const input = document.querySelector('.form-control');
 const feedback = document.querySelector('.feedback');
-const fullArticleButton = document.querySelector('.full-article');
-const closeButton = document.querySelector('[data-bs-dismiss="modal"]:not([aria-label="Close"])');
 
 const clearFeedback = () => {
   feedback.textContent = '';
@@ -139,7 +137,11 @@ const renderPosts = (state, posts, i18nInstance) => {
       modalTitle.textContent = post.postTitle;
       const modalBody = document.querySelector('.modal-body');
       modalBody.textContent = post.postDescription;
+      const fullArticleButton = document.querySelector('.full-article');
       fullArticleButton.setAttribute('href', post.postLink);
+      fullArticleButton.textContent = i18nInstance.t('buttons.readArticle');
+      const closeButton = document.querySelector('[data-bs-dismiss="modal"]:not([aria-label="Close"])');
+      closeButton.textContent = i18nInstance.t('buttons.close');
     });
     ul.append(li);
   });
@@ -147,8 +149,6 @@ const renderPosts = (state, posts, i18nInstance) => {
 };
 
 export default (state, i18nInstance) => {
-  fullArticleButton.textContent = i18nInstance.t('buttons.readArticle');
-  closeButton.textContent = i18nInstance.t('buttons.close');
   const watchedState = onChange(state, (path, value) => {
     switch (path) {
       case 'form.processState':
