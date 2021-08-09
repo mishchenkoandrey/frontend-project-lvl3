@@ -1,6 +1,6 @@
 // @ts-check
 
 import 'bootstrap/js/dist/modal';
-import app from './application.js';
+import init from './init.js';
 
-app();
+init();
