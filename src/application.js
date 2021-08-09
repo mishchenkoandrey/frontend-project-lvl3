@@ -39,7 +39,9 @@ export default () => {
 
   const watchedState = initView(state, i18nInstance);
 
-  form.addEventListener('submit', (e) => {
-    handleAddFeed(e, watchedState);
-  });
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      handleAddFeed(e, watchedState);
+    });
+  }
 };
