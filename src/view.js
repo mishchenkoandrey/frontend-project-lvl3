@@ -114,14 +114,14 @@ const renderPosts = (state, posts, i18nInstance) => {
     a.dataset.id = post.postId;
     a.textContent = post.postTitle;
     li.append(a);
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-    button.dataset.bsToggle = 'modal';
-    button.dataset.bsTarget = '#modal';
-    button.dataset.id = post.postId;
-    button.textContent = i18nInstance.t('buttons.view');
-    li.append(button);
+    const demoButton = document.createElement('button');
+    demoButton.type = 'button';
+    demoButton.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+    demoButton.dataset.bsToggle = 'modal';
+    demoButton.dataset.bsTarget = '#modal';
+    demoButton.dataset.id = post.postId;
+    demoButton.textContent = i18nInstance.t('buttons.view');
+    li.append(demoButton);
     a.addEventListener('click', () => {
       if (!isViewed) {
         handleViewPost(state, post);
@@ -129,7 +129,7 @@ const renderPosts = (state, posts, i18nInstance) => {
         a.classList.add('fw-normal', 'link-secondary');
       }
     });
-    button.addEventListener('click', () => {
+    demoButton.addEventListener('click', () => {
       if (!isViewed) {
         handleViewPost(state, post);
         a.classList.remove('fw-bold');
