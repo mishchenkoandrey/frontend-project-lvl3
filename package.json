@@ -1,5 +1,5 @@
 {
-  "name": "@hexlet/code",
+  "name": "frontend-project-lvl3",
   "version": "1.0.0",
   "description": "RSS aggregator",
   "main": "src/init.js",
