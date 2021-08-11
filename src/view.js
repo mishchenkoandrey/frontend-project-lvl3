@@ -2,7 +2,6 @@
 import onChange from 'on-change';
 import { handleViewPost } from './handlers.js';
 
-const submitButton = document.querySelector('[type="submit"]');
 const input = document.querySelector('.form-control');
 const feedback = document.querySelector('.feedback');
 
@@ -13,6 +12,7 @@ const clearFeedback = () => {
 };
 
 const toggleForm = (status) => {
+  const submitButton = document.querySelector('[type="submit"]');
   if (status) {
     submitButton.setAttribute('disabled', '');
     input.setAttribute('readOnly', '');
