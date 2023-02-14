@@ -5,7 +5,7 @@ import parseRss from './parser.js';
 
 const routes = {
   allOrigins: (url) => {
-    const result = new URL('/get', 'https://allorigins.hexlet.app');
+    const result = new URL('/get', 'https://allorigins.hexlet.app/get?disableCache=true&url=');
     result.searchParams.set('url', url);
     result.searchParams.set('disableCache', 'true');
     return result.toString();
