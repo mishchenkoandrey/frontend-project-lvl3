@@ -13,7 +13,9 @@ const updateRss = (state) => {
     Promise.all(promises)
       .then((results) => {
         const posts = results
-          .flatMap((result) => result.posts);
+          .flatMap((result) => (!result
+            ? []
+            : result.posts));
         const allPosts = _.union(posts, state.posts);
         const newPosts = _.differenceBy(allPosts, state.posts, 'postLink');
         if (newPosts.length > 0) {
@@ -29,7 +31,9 @@ const updateRss = (state) => {
   Promise.all(promises)
     .then((results) => {
       const posts = results
-        .flatMap((result) => result.posts);
+        .flatMap((result) => (!result
+          ? []
+          : result.posts));
       const allPosts = _.union(posts, state.posts);
       const newPosts = _.differenceBy(allPosts, state.posts, 'postLink');
       if (newPosts.length > 0) {

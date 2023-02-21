@@ -15,22 +15,23 @@ export const handleAddFeed = (e, state) => {
     state.form.processState = 'loading';
     loadRss(url)
       .then((feed) => {
-        feed.feedInfo = { ...feed.feedInfo, url };
-        state.feeds = [feed.feedInfo, ...state.feeds];
-        state.posts = [...feed.posts, ...state.posts];
-        state.form.processState = 'success';
-        if (feedsCount === 0) {
-          updateRss(state);
-        }
-        e.target.reset();
-      })
-      .catch((err) => {
-        state.form.processState = 'failing';
-        if (err.isAxiosError) {
-          state.form.error = 'errors.netError';
-        } else {
+        if (!feed) {
+          state.form.processState = 'failing';
           state.form.error = 'errors.invalidRss';
+        } else {
+          feed.feedInfo = { ...feed.feedInfo, url };
+          state.feeds = [feed.feedInfo, ...state.feeds];
+          state.posts = [...feed.posts, ...state.posts];
+          state.form.processState = 'success';
+          if (feedsCount === 0) {
+            updateRss(state);
+          }
+          e.target.reset();
         }
+      })
+      .catch(() => {
+        state.form.processState = 'failing';
+        state.form.error = 'errors.netError';
       });
   } else {
     state.form.processState = 'failing';
