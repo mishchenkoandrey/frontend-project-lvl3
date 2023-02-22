@@ -7,7 +7,10 @@ import updateRss from './updater.js';
 export const handleAddFeed = (e, state) => {
   e.preventDefault();
   const formData = new FormData(e.target);
-  const url = formData.get('url').toString().trim();
+  const inputUrl = formData.get('url');
+  const url = inputUrl
+    ? inputUrl.toString().trim()
+    : '';
   const error = validateUrl(url, state.feeds);
   state.form.error = error;
   const feedsCount = state.feeds.length;
