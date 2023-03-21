@@ -6,6 +6,12 @@ export default (state, i18nInstance) => {
   const submitButton = document.querySelector('[type="submit"]');
   const input = document.querySelector('.form-control');
   const feedback = document.querySelector('.feedback');
+  const feedsContainer = document.querySelector('.feeds');
+  const postsContainer = document.querySelector('.posts');
+  const modalTitle = document.querySelector('.modal-title');
+  const fullArticleButton = document.querySelector('.full-article');
+  const modalBody = document.querySelector('.modal-body');
+  const closeButton = document.querySelector('[data-bs-dismiss="modal"]:not([aria-label="Close"])');
 
   const clearFeedback = () => {
     feedback.textContent = '';
@@ -60,7 +66,6 @@ export default (state, i18nInstance) => {
   };
 
   const renderFeeds = (feeds) => {
-    const feedsContainer = document.querySelector('.feeds');
     feedsContainer.innerHTML = '';
     const feedsCard = document.createElement('div');
     feedsCard.classList.add('card', 'border-0');
@@ -85,7 +90,6 @@ export default (state, i18nInstance) => {
   };
 
   const renderPosts = (posts) => {
-    const postsContainer = document.querySelector('.posts');
     postsContainer.innerHTML = '';
     const postsCard = document.createElement('div');
     postsCard.classList.add('card', 'border-0');
@@ -134,14 +138,10 @@ export default (state, i18nInstance) => {
           a.classList.remove('fw-bold');
           a.classList.add('fw-normal', 'link-secondary');
         }
-        const modalTitle = document.querySelector('.modal-title');
         modalTitle.textContent = post.postTitle;
-        const modalBody = document.querySelector('.modal-body');
         modalBody.textContent = post.postDescription;
-        const fullArticleButton = document.querySelector('.full-article');
         fullArticleButton.setAttribute('href', post.postLink);
         fullArticleButton.textContent = i18nInstance.t('buttons.readArticle');
-        const closeButton = document.querySelector('[data-bs-dismiss="modal"]:not([aria-label="Close"])');
         closeButton.textContent = i18nInstance.t('buttons.close');
       });
       ul.append(li);
