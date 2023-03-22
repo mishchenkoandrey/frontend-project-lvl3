@@ -113,19 +113,18 @@ export default (state, i18nInstance) => {
     demoButton.dataset.id = post.postId;
     demoButton.textContent = i18nInstance.t('buttons.view');
     li.append(demoButton);
-    a.addEventListener('click', () => {
+
+    const handlePostClick = () => {
       if (!isViewed) {
         handleViewPost(state, post);
         a.classList.remove('fw-bold');
         a.classList.add('fw-normal', 'link-secondary');
       }
-    });
+    };
+
+    a.addEventListener('click', handlePostClick);
     demoButton.addEventListener('click', () => {
-      if (!isViewed) {
-        handleViewPost(state, post);
-        a.classList.remove('fw-bold');
-        a.classList.add('fw-normal', 'link-secondary');
-      }
+      handlePostClick();
       modalTitle.textContent = post.postTitle;
       modalBody.textContent = post.postDescription;
       fullArticleButton.setAttribute('href', post.postLink);
