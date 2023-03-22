@@ -113,25 +113,17 @@ export default (state, i18nInstance) => {
     demoButton.dataset.id = post.postId;
     demoButton.textContent = i18nInstance.t('buttons.view');
     li.append(demoButton);
-    a.addEventListener('click', () => {
+
+    const handlePostClick = () => {
       if (!isViewed) {
         handleViewPost(state, post);
         a.classList.remove('fw-bold');
         a.classList.add('fw-normal', 'link-secondary');
       }
-    });
-    demoButton.addEventListener('click', () => {
-      if (!isViewed) {
-        handleViewPost(state, post);
-        a.classList.remove('fw-bold');
-        a.classList.add('fw-normal', 'link-secondary');
-      }
-      modalTitle.textContent = post.postTitle;
-      modalBody.textContent = post.postDescription;
-      fullArticleButton.setAttribute('href', post.postLink);
-      fullArticleButton.textContent = i18nInstance.t('buttons.readArticle');
-      closeButton.textContent = i18nInstance.t('buttons.close');
-    });
+    };
+
+    a.addEventListener('click', handlePostClick);
+    demoButton.addEventListener('click', handlePostClick);
     ul.append(li);
   };
 
