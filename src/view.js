@@ -89,6 +89,52 @@ export default (state, i18nInstance) => {
     feedsCard.append(ul);
   };
 
+  const renderPost = (post, ul) => {
+    const isViewed = state.viewedPostsIds.includes(post.postId);
+    const li = document.createElement('li');
+    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
+    const a = document.createElement('a');
+    a.href = post.postLink;
+    if (isViewed) {
+      a.classList.add('fw-normal', 'link-secondary');
+    } else {
+      a.classList.add('fw-bold');
+    }
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.dataset.id = post.postId;
+    a.textContent = post.postTitle;
+    li.append(a);
+    const demoButton = document.createElement('button');
+    demoButton.type = 'button';
+    demoButton.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+    demoButton.dataset.bsToggle = 'modal';
+    demoButton.dataset.bsTarget = '#modal';
+    demoButton.dataset.id = post.postId;
+    demoButton.textContent = i18nInstance.t('buttons.view');
+    li.append(demoButton);
+    a.addEventListener('click', () => {
+      if (!isViewed) {
+        handleViewPost(state, post);
+        a.classList.remove('fw-bold');
+        a.classList.add('fw-normal', 'link-secondary');
+      }
+    });
+    demoButton.addEventListener('click', () => {
+      if (!isViewed) {
+        handleViewPost(state, post);
+        a.classList.remove('fw-bold');
+        a.classList.add('fw-normal', 'link-secondary');
+      }
+      modalTitle.textContent = post.postTitle;
+      modalBody.textContent = post.postDescription;
+      fullArticleButton.setAttribute('href', post.postLink);
+      fullArticleButton.textContent = i18nInstance.t('buttons.readArticle');
+      closeButton.textContent = i18nInstance.t('buttons.close');
+    });
+    ul.append(li);
+  };
+
   const renderPosts = (posts) => {
     postsContainer.innerHTML = '';
     const postsCard = document.createElement('div');
@@ -101,51 +147,7 @@ export default (state, i18nInstance) => {
     postsContainer.append(postsCard);
     const ul = document.createElement('ul');
     ul.classList.add('list-group', 'border-0', 'rounded-0');
-    posts.forEach((post) => {
-      const isViewed = state.viewedPostsIds.includes(post.postId);
-      const li = document.createElement('li');
-      li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
-      const a = document.createElement('a');
-      a.href = post.postLink;
-      if (isViewed) {
-        a.classList.add('fw-normal', 'link-secondary');
-      } else {
-        a.classList.add('fw-bold');
-      }
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      a.dataset.id = post.postId;
-      a.textContent = post.postTitle;
-      li.append(a);
-      const demoButton = document.createElement('button');
-      demoButton.type = 'button';
-      demoButton.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-      demoButton.dataset.bsToggle = 'modal';
-      demoButton.dataset.bsTarget = '#modal';
-      demoButton.dataset.id = post.postId;
-      demoButton.textContent = i18nInstance.t('buttons.view');
-      li.append(demoButton);
-      a.addEventListener('click', () => {
-        if (!isViewed) {
-          handleViewPost(state, post);
-          a.classList.remove('fw-bold');
-          a.classList.add('fw-normal', 'link-secondary');
-        }
-      });
-      demoButton.addEventListener('click', () => {
-        if (!isViewed) {
-          handleViewPost(state, post);
-          a.classList.remove('fw-bold');
-          a.classList.add('fw-normal', 'link-secondary');
-        }
-        modalTitle.textContent = post.postTitle;
-        modalBody.textContent = post.postDescription;
-        fullArticleButton.setAttribute('href', post.postLink);
-        fullArticleButton.textContent = i18nInstance.t('buttons.readArticle');
-        closeButton.textContent = i18nInstance.t('buttons.close');
-      });
-      ul.append(li);
-    });
+    posts.forEach((post) => renderPost(post, ul));
     postsCard.append(ul);
   };
 
